@@ -1,0 +1,17 @@
+[package]
+name = "cic"
+version = "0.1.0"
+edition = "2021"
+authors = ["Naohiro CHIKAMATSU <n.chika156@gmail.com>"]
+license = "MIT"
+description = "cis - compound interest calculations"
+repository = "https://github.com/nao1215/cic"
+readme = "README.md"
+categories = ["math", "finance"]
+keywords = ["cli", "graph"]
+
+[dependencies]
+clap = "4.5.9"
+serde = { version = "1.0.204", features = ["derive"] }
+serde_json = "1.0.120"
+plotters = "0.3.4"

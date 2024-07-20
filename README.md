@@ -98,3 +98,18 @@ $ ./target/debug/cic --principal 1000000 --contribution 100000 --rate 10 --years
 ## License
 MIT
 
+## Contributing
+First off, thanks for taking the time to contribute! ❤️  See [CONTRIBUTING.md](./CONTRIBUTING.md) for more information.
+Contributions are not only related to development. For example, GitHub Star motivates me to develop!
+
+[![Star History Chart](https://api.star-history.com/svg?repos=nao1215/cic&type=Date)](https://star-history.com/#nao1215/cic&Date)
+
+## Side note
+
+The cic command is my first project in Rust. I am using it to learn how to write and structure projects in Rust.
+
+### Why did I choose the theme of compound interest?
+
+In Japan, the small amount investment tax exemption system (NISA) started gaining traction in 2024. I was fortunate enough to get involved in a NISA app at work.
+
+This led me to develop an interest in investments. So, it's not surprising that I chose compound interest as my theme.

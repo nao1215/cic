@@ -28,7 +28,9 @@ impl Investment {
     /// # Example
     ///
     /// ```
-    /// let matches = clap::App::new("investment")
+    /// use cic::calculations::Investment;
+    ///
+    /// let matches = clap::Command::new("investment")
     ///     .arg(clap::Arg::new("principal").default_value("0"))
     ///     .arg(clap::Arg::new("contribution").default_value("1"))
     ///     .arg(clap::Arg::new("rate").default_value("5"))
@@ -66,6 +68,9 @@ impl Investment {
     /// # Example
     ///
     /// ```
+    /// use cic::calculations::YearlySummary;
+    /// use cic::calculations::Investment;
+    ///
     /// let investment = Investment {
     ///     principal: 1000.0,
     ///     contribution: 100.0,
@@ -133,6 +138,9 @@ pub struct YearlySummary {
 /// # Example
 ///
 /// ```no_run
+/// use cic::calculations::plot_summary;
+/// use cic::calculations::YearlySummary;
+///
 /// let summary = vec![
 ///     YearlySummary { year: 1, principal: 1000.0, annual_contribution: 1200.0, total_contribution: 1200.0, annual_interest: 50.0, total_interest: 50.0, total_amount: 2150.0 },
 ///     // Add more summaries here
@@ -197,4 +205,64 @@ pub fn plot_summary(summary: &[YearlySummary]) -> Result<(), Box<dyn std::error:
         .draw()?;
 
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_investment_initialization() {
+        let investment = Investment {
+            principal: 1000.0,
+            contribution: 100.0,
+            rate: 5.0,
+            years: 10,
+        };
+
+        assert_eq!(investment.principal, 1000.0);
+        assert_eq!(investment.contribution, 100.0);
+        assert_eq!(investment.rate, 5.0);
+        assert_eq!(investment.years, 10);
+    }
+
+    #[test]
+    fn test_yearly_summary() {
+        let investment = Investment {
+            principal: 1000.0,
+            contribution: 100.0,
+            rate: 5.0,
+            years: 3,
+        };
+
+        let summary = investment.yearly_summary();
+        assert_eq!(summary.len(), 3);
+
+        // Year 1
+        assert_eq!(summary[0].year, 1);
+        assert_eq!(summary[0].principal, 1000.0);
+        assert_eq!(summary[0].annual_contribution, 1200.0);
+        assert!((summary[0].annual_interest - 50.0).abs() < 1e-2);
+        assert_eq!(summary[0].total_contribution, 1200.0);
+        assert!((summary[0].total_interest - 50.0).abs() < 1e-2);
+        assert!((summary[0].total_amount - 2250.0).abs() < 1e-2);
+
+        // Year 2
+        assert_eq!(summary[1].year, 2);
+        assert_eq!(summary[1].principal, 1000.0);
+        assert_eq!(summary[1].annual_contribution, 1200.0);
+        assert!((summary[1].annual_interest - 112.5).abs() < 1e-2);
+        assert_eq!(summary[1].total_contribution, 2400.0);
+        assert!((summary[1].total_interest - 162.5).abs() < 1e-2);
+        assert!((summary[1].total_amount - 3562.5).abs() < 1e-2);
+
+        // Year 3
+        assert_eq!(summary[2].year, 3);
+        assert_eq!(summary[2].principal, 1000.0);
+        assert_eq!(summary[2].annual_contribution, 1200.0);
+        assert!((summary[2].annual_interest - 178.125).abs() < 1e-2);
+        assert_eq!(summary[2].total_contribution, 3600.0);
+        assert!((summary[2].total_interest - 340.625).abs() < 1e-2);
+        assert!((summary[2].total_amount - 4940.625).abs() < 1e-2);
+    }
 }

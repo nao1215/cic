@@ -1,3 +1,6 @@
+[![Build](https://github.com/nao1215/cic/actions/workflows/build.yml/badge.svg)](https://github.com/nao1215/cic/actions/workflows/build.yml)
+[![Unit tests](https://github.com/nao1215/cic/actions/workflows/test.yml/badge.svg)](https://github.com/nao1215/cic/actions/workflows/test.yml)
+
 # cic - compound interest calculator
 The cic command calculates compound interest. The results of the calculation are output as either a bar graph (`plot.png`) or in JSON format.
 

@@ -2,7 +2,7 @@
 [![Unit tests](https://github.com/nao1215/cic/actions/workflows/test.yml/badge.svg)](https://github.com/nao1215/cic/actions/workflows/test.yml)
 
 # cic - compound interest calculator
-The cic command calculates compound interest. The results of the calculation are output as either a bar graph (`plot.png`) or in JSON format.
+The cic command calculates compound interest. The results of the calculation are output as either a bar graph (`plot.png`) or in JSON format. The cic command has a mode for starting as a server.
 
 The cis calculates the total final amount of the investment based on the input values for the principal, monthly contribution, annual interest rate, and the number of years of contribution.
 
@@ -22,7 +22,11 @@ $ cic --help
 cis - Calculates Compound Interest.
 Output the results of compound interest calculations as either a line graph image or JSON.
 
-Usage: cic [OPTIONS]
+Usage: cic [OPTIONS] [COMMAND]
+
+Commands:
+  server  Starts the server mode
+  help    Print this message or the help of the given subcommand(s)
 
 Options:
   -p, --principal <PRINCIPAL>        The principal at the time you started investing. Defaults to 0
@@ -94,6 +98,43 @@ $ ./target/debug/cic --principal 1000000 --contribution 100000 --rate 10 --years
   }
 ]
 ```
+
+### Sever mode
+
+```shell
+$ cic server
+Starting server, port: 8080
+POST /compound-interests
+```
+
+```shell
+$ curl -X POST "http://localhost:8080/compound-interests" \
+  -H "Content-Type: application/json" \
+  -d '{"principal": 1000000, "contribution": 100000, "rate": 10, "years": 2}' | jq .
+[
+  {
+    "annual_contribution": 1200000.0,
+    "annual_interest": 100000.0,
+    "principal": 1000000.0,
+    "total_amount": 2300000.0,
+    "total_contribution": 1200000.0,
+    "total_interest": 100000.0,
+    "year": 1
+  },
+  {
+    "annual_contribution": 1200000.0,
+    "annual_interest": 230000.0,
+    "principal": 1000000.0,
+    "total_amount": 3730000.0,
+    "total_contribution": 2400000.0,
+    "total_interest": 330000.0,
+    "year": 2
+  }
+]
+```
+
+
+
 
 ## License
 MIT

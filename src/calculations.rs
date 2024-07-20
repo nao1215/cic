@@ -1,3 +1,4 @@
+use crate::server;
 use plotters::prelude::*;
 use serde::Serialize;
 
@@ -57,6 +58,65 @@ impl Investment {
                 .and_then(|s| s.parse().ok())
                 .unwrap_or(0),
         }
+    }
+
+    /// Creates an `Investment` instance from the provided `InvestmentParams`.
+    ///
+    /// # Arguments
+    ///
+    /// * `params` - An instance of `InvestmentParams` containing the parameters for the investment.
+    ///   This includes the principal amount, monthly contribution, annual interest rate, and duration in years.
+    ///
+    /// # Returns
+    ///
+    /// Returns a `Result<Self, &'static str>`. On success, returns an `Investment` instance initialized with
+    /// the provided parameters. If any of the values are negative, returns an error with a message indicating
+    /// that negative values are not allowed.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if any of the following conditions are met:
+    /// - `params.principal` is less than 0.0
+    /// - `params.contribution` is less than 0.0
+    /// - `params.rate` is less than 0.0
+    /// - `params.years` is less than 0
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use cic::server::InvestmentParams;
+    /// use cic::calculations::Investment;
+    ///
+    /// let params = InvestmentParams {
+    ///     principal: 1000.0,
+    ///     contribution: 100.0,
+    ///     rate: 5.0,
+    ///     years: 10,
+    /// };
+    ///
+    /// match Investment::from_params(params) {
+    ///     Ok(investment) => println!("Investment created: {:?}", investment),
+    ///     Err(e) => eprintln!("Error creating investment: {}", e),
+    /// }
+    /// ```
+    ///
+    /// # Panics
+    ///
+    /// This function does not panic but returns an error if invalid values are provided.
+    pub fn from_params(params: server::InvestmentParams) -> Result<Self, &'static str> {
+        if params.principal < 0.0
+            || params.contribution < 0.0
+            || params.rate < 0.0
+            || params.years < 0
+        {
+            return Err("Negative values are not allowed");
+        }
+        Ok(Self {
+            principal: params.principal,
+            contribution: params.contribution,
+            rate: params.rate,
+            years: params.years,
+        })
     }
 
     /// Generates a yearly summary of the investment.
